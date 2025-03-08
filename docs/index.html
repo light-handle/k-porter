@@ -278,6 +278,18 @@
             box-shadow: var(--shadow);
         }
         
+        .version-info {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .version-number {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
         .how-it-works {
             text-align: center;
             margin-bottom: 4rem;
@@ -435,6 +447,7 @@
         
         <section class="downloads" id="downloads">
             <h2>Download K-Porter</h2>
+            <p class="version-info">Latest version: <span class="version-number">latest</span></p>
             <div class="platform-downloads">
                 <div class="platform">
                     <h3>macOS</h3>
@@ -475,15 +488,58 @@
         });
         
         // Update download links with the latest version
-        fetch('https://api.github.com/repos/light-handle/k-porter/releases/latest')
-            .then(response => response.json())
-            .then(data => {
-                const version = data.tag_name;
-                document.querySelectorAll('.download-link').forEach(link => {
-                    link.href = link.href.replace('latest', version.substring(1));
+        document.addEventListener('DOMContentLoaded', function() {
+            // First set the links to point to the "latest" URL which will work regardless
+            document.querySelectorAll('.download-link').forEach(link => {
+                const originalHref = link.href;
+                const parts = originalHref.split('/');
+                const filename = parts[parts.length - 1];
+                
+                // Keep the URL with 'latest' in case the version fetch fails
+                link.setAttribute('data-original-url', originalHref);
+                
+                // Point to the direct latest download URL that works without JavaScript
+                link.href = `https://github.com/light-handle/k-porter/releases/latest/download/${filename}`;
+            });
+            
+            // Then try to fetch the actual version number
+            fetch('https://api.github.com/repos/light-handle/k-porter/releases/latest')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch latest release');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.tag_name) {
+                        const version = data.tag_name.replace(/^v/, ''); // Remove 'v' prefix if it exists
+                        console.log('Latest version:', version);
+                        
+                        // Update specific links with the exact version
+                        document.querySelectorAll('.download-link').forEach(link => {
+                            // Replace 'latest' in the URL with the actual version
+                            const href = link.getAttribute('data-original-url');
+                            if (href) {
+                                link.href = href.replace('latest', version);
+                            }
+                            
+                            // Also update any text that indicates the version
+                            if (link.textContent.includes('latest')) {
+                                link.textContent = link.textContent.replace('latest', `v${version}`);
+                            }
+                        });
+                        
+                        // Add version number to any element with class 'version-number'
+                        document.querySelectorAll('.version-number').forEach(el => {
+                            el.textContent = version;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching latest version:', error);
+                    // The links will still point to /latest/download/ which will work
                 });
-            })
-            .catch(error => console.error('Error fetching latest version:', error));
+        });
     </script>
 </body>
 </html> 
