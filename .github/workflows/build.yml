@@ -35,6 +35,8 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build:mac -- --publish never
+      - name: List dist directory contents
+        run: ls -la dist/
       - name: Upload macOS DMG
         uses: actions/upload-release-asset@v1
         env:
@@ -64,6 +66,9 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build:win -- --publish never
+      - name: List dist directory contents
+        shell: pwsh
+        run: Get-ChildItem dist/
       - name: Upload Windows Installer
         uses: actions/upload-release-asset@v1
         env:
@@ -93,6 +98,8 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build:linux -- --publish never
+      - name: List dist directory contents
+        run: ls -la dist/
       - name: Upload Linux AppImage
         uses: actions/upload-release-asset@v1
         env:
