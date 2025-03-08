@@ -2,7 +2,7 @@
 
 K-Porter is a desktop application for macOS, Windows, and Linux that makes it easy to port-forward to Kubernetes services. It provides a simple interface to view your Kubernetes clusters, namespaces, and services, and allows you to quickly set up and manage port forwards.
 
-[![GitHub Release](https://img.shields.io/github/v/release/yourusername/k-porter?style=flat-square)](https://github.com/yourusername/k-porter/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/light-handle/k-porter?style=flat-square)](https://github.com/light-handle/k-porter/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
 ## Features
@@ -18,21 +18,21 @@ K-Porter is a desktop application for macOS, Windows, and Linux that makes it ea
 
 ### macOS
 
-1. Download the latest `K-Porter-x.x.x.dmg` file from the [Releases](https://github.com/yourusername/k-porter/releases) page or [downloads site](https://yourusername.github.io/k-porter/)
+1. Download the latest `K-Porter-x.x.x.dmg` file from the [Releases](https://github.com/light-handle/k-porter/releases) page or [downloads site](https://light-handle.github.io/k-porter/)
 2. Open the DMG file
 3. Drag K-Porter to your Applications folder
 4. Open K-Porter from your Applications folder or Launchpad
 
 ### Windows
 
-1. Download the latest `K-Porter-Setup-x.x.x.exe` (installer) or `K-Porter-x.x.x.exe` (portable) from the [Releases](https://github.com/yourusername/k-porter/releases) page or [downloads site](https://yourusername.github.io/k-porter/)
+1. Download the latest `K-Porter-Setup-x.x.x.exe` (installer) or `K-Porter-x.x.x.exe` (portable) from the [Releases](https://github.com/light-handle/k-porter/releases) page or [downloads site](https://light-handle.github.io/k-porter/)
 2. If using the installer, run the .exe and follow the installation wizard
 3. If using the portable version, extract and run directly
 4. Launch K-Porter from the Start menu or desktop shortcut
 
 ### Linux
 
-1. Download the latest `k-porter_x.x.x_amd64.deb` (Debian/Ubuntu) or `K-Porter-x.x.x.AppImage` from the [Releases](https://github.com/yourusername/k-porter/releases) page or [downloads site](https://yourusername.github.io/k-porter/)
+1. Download the latest `k-porter_x.x.x_amd64.deb` (Debian/Ubuntu) or `K-Porter-x.x.x.AppImage` from the [Releases](https://github.com/light-handle/k-porter/releases) page or [downloads site](https://light-handle.github.io/k-porter/)
 2. For .deb: `sudo dpkg -i k-porter_x.x.x_amd64.deb`
 3. For AppImage: Make executable with `chmod +x K-Porter-x.x.x.AppImage` and run directly
 
@@ -40,7 +40,7 @@ K-Porter is a desktop application for macOS, Windows, and Linux that makes it ea
 
 1. Clone this repository
    ```
-   git clone https://github.com/yourusername/k-porter.git
+   git clone https://github.com/light-handle/k-porter.git
    cd k-porter
    ```
 
@@ -109,73 +109,24 @@ K-Porter uses a direct installation method similar to Sublime Text:
 - `npm run build:win` - Build for Windows
 - `npm run build:linux` - Build for Linux
 
-## Building K-Porter for Distribution
+## Releases
 
-### Building for macOS
+K-Porter uses GitHub Actions to automatically build and release the application for all supported platforms. When a new tag is pushed with the format `vX.Y.Z`, the action will:
 
-K-Porter uses electron-builder to create distributable packages:
+1. Create a new draft release
+2. Build the application for macOS, Windows, and Linux
+3. Upload all build artifacts to the release
+4. The release can then be published manually after reviewing
 
-1. Install dependencies:
-   ```
-   npm install
-   ```
+### Creating a New Release
 
-2. Create icons (if you have a source PNG):
-   ```
-   # Create source PNG icon at 1024x1024 pixels
-   npm run generate-icons source-icon.png
-   ```
-
-3. Build for macOS:
-   ```
-   npm run build:mac
-   ```
-
-4. Find the distributable files in the `dist` directory:
-   - `K-Porter-x.x.x-x64.dmg` - Installer disk image
-   - `K-Porter-x.x.x-x64.zip` - Zipped application
-
-### Signing and Notarizing (for distribution)
-
-For proper distribution, you'll need to:
-
-1. Obtain an Apple Developer certificate
-2. Configure signing in your environment
-3. Use electron-notarize to notarize your app
-4. See the [electron-builder documentation](https://www.electron.build/code-signing) for details
-
-## GitHub Pages Setup
-
-K-Porter uses GitHub Pages to host a downloads website:
-
-1. The website source is in the `docs` directory
-2. It is automatically deployed via GitHub Actions when changes are pushed
-3. To customize the site:
-   - Edit files in the `docs` directory
-   - Add screenshots to `docs/screenshots`
-   - Push changes to GitHub
-   - The site will be available at `https://[yourusername].github.io/k-porter/`
-
-### Setting Up GitHub Pages
-
-1. Go to your repository settings on GitHub
-2. Navigate to "Pages" under "Code and automation" in the sidebar
-3. For "Source", select "GitHub Actions" 
-4. The workflow in `.github/workflows/pages.yml` will handle deployment
-
-## Releasing New Versions
-
-To create a new release:
-
-1. Update the version in `package.json`
-2. Commit your changes
-3. Create and push a new tag with the format `vX.Y.Z`:
-   ```
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-4. The GitHub Actions workflow will automatically build the app for all platforms
-5. Go to the Releases page on GitHub, edit the draft release, and publish
+```bash
+# Update version in package.json first, then:
+git add .
+git commit -m "Prepare release vX.Y.Z"
+git tag vX.Y.Z
+git push && git push --tags
+```
 
 ## Troubleshooting
 
@@ -206,4 +157,16 @@ MIT
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## GitHub Pages Setup
+
+K-Porter uses GitHub Pages to host a downloads website:
+
+1. The website source is in the `docs` directory
+2. It is automatically deployed via GitHub Actions when changes are pushed
+3. To customize the site:
+   - Edit files in the `docs` directory
+   - Add screenshots to `docs/screenshots`
+   - Push changes to GitHub
+   - The site will be available at `https://light-handle.github.io/k-porter/` 
