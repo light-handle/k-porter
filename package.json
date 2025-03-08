@@ -27,6 +27,17 @@
     "appId": "com.k-porter",
     "productName": "K-Porter",
     "publish": null,
+    "asar": false,
+    "extraResources": [
+      {
+        "from": "node_modules/@kubernetes",
+        "to": "node_modules/@kubernetes"
+      }
+    ],
+    "files": [
+      "**/*",
+      "!**/{.git,.idea,.vscode,docs,build/icons,.gitignore,.travis.yml,README.md}"
+    ],
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": ["dmg", "zip"],

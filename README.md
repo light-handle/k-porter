@@ -21,19 +21,19 @@ K-Porter is a desktop application for macOS, Windows, and Linux that makes it ea
 1. Download the latest `K-Porter-x.x.x-mac.dmg` file from the [Releases](https://github.com/light-handle/k-porter/releases) page or [downloads site](https://light-handle.github.io/k-porter/)
 2. Open the DMG file
 3. Drag K-Porter to your Applications folder
-4. Open K-Porter from your Applications folder or Launchpad
 
-**Note for macOS security warnings:**
-If you see a message that the app is damaged or can't be opened:
-1. Right-click (or Control+click) on the app in Finder
+**⚠️ Important for macOS Users:**
+To open K-Porter the first time, run this command in Terminal:
+```
+sudo xattr -rd com.apple.quarantine /Applications/K-Porter.app
+```
+This removes the macOS security block. You'll only need to do this once.
+
+If you prefer not to use Terminal, you can try:
+1. Right-click (or Control+click) on the K-Porter app in Finder
 2. Select "Open" from the context menu
 3. Click "Open" in the dialog that appears
-4. The app will now open and remember this choice for future launches
-
-Alternatively, you can run this command in Terminal to bypass Gatekeeper:
-```
-sudo xattr -d com.apple.quarantine /Applications/K-Porter.app
-```
+4. The app should now open and remember this choice
 
 ### Windows
 
