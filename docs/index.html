@@ -4,170 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Porter: Kubernetes Port Forwarder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            max-width: 650px;
             margin: 0 auto;
             padding: 2rem;
-            background-color: #f9fafb;
         }
         
         @media (prefers-color-scheme: dark) {
             body {
-                background-color: #1a1a1a;
-                color: #e0e0e0;
+                background-color: #111;
+                color: #eee;
             }
-            
             a {
-                color: #4dabf7;
-            }
-            
-            .btn {
-                background-color: #3b82f6;
-                color: white;
-            }
-            
-            .btn:hover {
-                background-color: #2563eb;
-            }
-            
-            .card {
-                background-color: #2d2d2d;
-                border-color: #444;
+                color: #58a6ff;
             }
         }
         
         h1 {
-            font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            color: #2563eb;
-        }
-        
-        h2 {
-            font-size: 1.5rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
         }
         
         p {
-            margin-bottom: 1.5rem;
-        }
-        
-        .description {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            margin-right: 1rem;
             margin-bottom: 1rem;
         }
         
-        .btn:hover {
-            background-color: #1d4ed8;
+        ul {
+            margin-bottom: 1.5rem;
         }
         
-        .btn-secondary {
-            background-color: transparent;
-            color: #2563eb;
-            border: 1px solid #2563eb;
+        li {
+            margin-bottom: 0.25rem;
         }
         
-        .btn-secondary:hover {
-            background-color: rgba(37, 99, 235, 0.1);
-        }
-        
-        .feature-list {
-            margin-bottom: 2rem;
-        }
-        
-        .feature-list li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .card {
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .logo img {
-            max-width: 150px;
-            height: auto;
+        .download {
+            margin: 1.5rem 0;
         }
         
         footer {
-            margin-top: 4rem;
-            text-align: center;
+            margin-top: 2rem;
+            border-top: 1px solid #ccc;
+            padding-top: 1rem;
             font-size: 0.9rem;
-            color: #6b7280;
-        }
-        
-        footer a {
-            color: #2563eb;
-            text-decoration: none;
-        }
-        
-        footer a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>K-Porter</h1>
-        <p class="description">A simple, elegant Kubernetes port forwarding utility</p>
-    </header>
+    <h1>K-Porter</h1>
+    <p><em>A Kubernetes Port Forwarding Utility</em></p>
     
-    <div class="card">
-        <p>K-Porter is a desktop application that simplifies Kubernetes port forwarding. It provides an intuitive interface to browse your clusters, namespaces, and services, allowing you to set up port forwards with just a few clicks.</p>
-        
-        <p>No more typing complex kubectl commands or remembering port numbers - K-Porter handles it all for you.</p>
-        
-        <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
-        <a href="https://github.com/light-handle/k-porter" class="btn btn-secondary">View on GitHub</a>
+    <p>K-Porter is a desktop application that simplifies Kubernetes port forwarding. Browse your clusters, namespaces, and services, and set up port forwards with a simple interface instead of complex kubectl commands.</p>
+    
+    <div class="download">
+        <p><strong><a href="https://github.com/light-handle/k-porter/releases/latest">Download Latest Release</a></strong> | <a href="https://github.com/light-handle/k-porter">View on GitHub</a></p>
     </div>
     
-    <h2>Key Features</h2>
-    <ul class="feature-list">
-        <li><strong>Automatic Detection</strong> - Automatically detects Kubernetes clusters from your kubeconfig file</li>
-        <li><strong>Resource Browser</strong> - Easily browse namespaces and services in each cluster</li>
-        <li><strong>One-Click Port Forwarding</strong> - Set up port forwarding with just a few clicks</li>
-        <li><strong>Connection Manager</strong> - Track and manage all active port forwards</li>
-        <li><strong>Multi-Cluster Support</strong> - Easily switch between different Kubernetes clusters</li>
-        <li><strong>Dark Mode Support</strong> - Comfortable viewing experience day or night</li>
-    </ul>
-    
-    <h2>Supported Platforms</h2>
-    <p>K-Porter is available for:</p>
+    <h2>Features:</h2>
     <ul>
-        <li>macOS (10.14 and later)</li>
-        <li>Windows (10 and later)</li>
-        <li>Linux (Debian/Ubuntu and other distros)</li>
+        <li>Automatic detection of Kubernetes clusters from your kubeconfig file</li>
+        <li>Easy browsing of namespaces and services</li>
+        <li>One-click port forwarding to any service</li>
+        <li>Manage all active port forwards from a simple dashboard</li>
+        <li>Multi-cluster support</li>
+        <li>Available for macOS, Windows, and Linux</li>
     </ul>
     
     <footer>
         <p>K-Porter is open-source software released under the MIT License.</p>
-        <p><a href="https://github.com/light-handle/k-porter">View on GitHub</a> | <a href="https://github.com/light-handle/k-porter/issues">Report an Issue</a></p>
     </footer>
 </body>
 </html> 
