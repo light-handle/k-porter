@@ -4,437 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Porter: Kubernetes Port Forwarder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #3b82f6;
-            --primary-hover: #2563eb;
-            --secondary-color: #10b981;
-            --bg-light: #f9fafb;
-            --bg-white: #ffffff;
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --border-color: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9fafb;
         }
         
         @media (prefers-color-scheme: dark) {
-            :root {
-                --primary-color: #3b82f6;
-                --primary-hover: #60a5fa;
-                --secondary-color: #10b981;
-                --bg-light: #111827;
-                --bg-white: #1f2937;
-                --text-primary: #f3f4f6;
-                --text-secondary: #e5e7eb;
-                --border-color: #374151;
-                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-                --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.26);
-                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+            body {
+                background-color: #1a1a1a;
+                color: #e0e0e0;
+            }
+            
+            a {
+                color: #4dabf7;
+            }
+            
+            .btn {
+                background-color: #3b82f6;
+                color: white;
+            }
+            
+            .btn:hover {
+                background-color: #2563eb;
+            }
+            
+            .card {
+                background-color: #2d2d2d;
+                border-color: #444;
             }
         }
         
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background-color: var(--bg-light);
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        header {
-            text-align: center;
-            padding: 4rem 0;
-        }
-        
         h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
+            color: #2563eb;
         }
         
-        .subtitle {
+        h2 {
             font-size: 1.5rem;
-            color: var(--text-secondary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .description {
+            font-size: 1.2rem;
             margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        .hero {
-            background-color: var(--bg-white);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin-bottom: 4rem;
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto 2.5rem auto;
-            color: var(--text-secondary);
-        }
-        
-        .btn-container {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
         }
         
         .btn {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--primary-color);
+            display: inline-block;
+            background-color: #2563eb;
             color: white;
-            padding: 14px 28px;
-            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow);
+            border-radius: 4px;
+            font-weight: 500;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
         }
         
         .btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            background-color: #1d4ed8;
         }
         
         .btn-secondary {
             background-color: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+            color: #2563eb;
+            border: 1px solid #2563eb;
         }
         
         .btn-secondary:hover {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--primary-hover);
-            border-color: var(--primary-hover);
+            background-color: rgba(37, 99, 235, 0.1);
         }
         
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+        .feature-list {
+            margin-bottom: 2rem;
         }
         
-        .feature {
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            position: relative;
-            overflow: hidden;
+        .feature-list li {
+            margin-bottom: 0.5rem;
         }
         
-        .feature:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+        .card {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
         
-        .feature::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        
-        .feature:hover::before {
-            opacity: 1;
-        }
-        
-        .feature h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .feature p {
-            color: var(--text-secondary);
-        }
-        
-        .download-section {
-            background-color: var(--bg-white);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin-bottom: 4rem;
-            box-shadow: var(--shadow-lg);
+        .logo {
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .download-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-        
-        .download-section h2 {
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        
-        .download-section p {
-            color: var(--text-secondary);
             margin-bottom: 2rem;
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
         }
         
-        .platforms {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .platform-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            background-color: var(--bg-light);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        .how-it-works {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        
-        .how-it-works h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        
-        .steps {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .step {
-            flex: 1;
-            min-width: 250px;
-            max-width: 300px;
-            padding: 2rem;
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-        
-        .step-number {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow);
+        .logo img {
+            max-width: 150px;
+            height: auto;
         }
         
         footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
             margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
         }
         
         footer a {
-            color: var(--primary-color);
+            color: #2563eb;
             text-decoration: none;
-            font-weight: 500;
         }
         
         footer a:hover {
             text-decoration: underline;
         }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero {
-                padding: 2rem 1rem;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>K-Porter</h1>
-            <div class="subtitle">A Modern Kubernetes Port Forwarding Utility</div>
-        </header>
+    <header>
+        <h1>K-Porter</h1>
+        <p class="description">A simple, elegant Kubernetes port forwarding utility</p>
+    </header>
+    
+    <div class="card">
+        <p>K-Porter is a desktop application that simplifies Kubernetes port forwarding. It provides an intuitive interface to browse your clusters, namespaces, and services, allowing you to set up port forwards with just a few clicks.</p>
         
-        <section class="hero">
-            <p>
-                K-Porter is a desktop application that simplifies Kubernetes port forwarding. With an intuitive interface, it lets you browse your clusters, namespaces, and services, and set up port forwards with just a few clicks - no more complex kubectl commands.
-            </p>
-            <div class="btn-container">
-                <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
-                <a href="https://github.com/light-handle/k-porter" class="btn btn-secondary">View on GitHub</a>
-            </div>
-        </section>
+        <p>No more typing complex kubectl commands or remembering port numbers - K-Porter handles it all for you.</p>
         
-        <div class="features">
-            <div class="feature">
-                <h3>🔍 Automatic Detection</h3>
-                <p>K-Porter automatically detects all your Kubernetes clusters from your kubeconfig file, providing a seamless setup experience without any manual configuration.</p>
-            </div>
-            <div class="feature">
-                <h3>📋 Resource Browser</h3>
-                <p>Easily browse through all namespaces and services in each of your clusters with a clean, intuitive interface designed for maximum productivity.</p>
-            </div>
-            <div class="feature">
-                <h3>🔌 One-Click Port Forwarding</h3>
-                <p>Set up port forwarding to any service with just a few clicks. No more typing long kubectl commands or remembering port numbers.</p>
-            </div>
-            <div class="feature">
-                <h3>📊 Connection Manager</h3>
-                <p>Manage and monitor all your active port forwards from a single dashboard, with the ability to start, stop, or modify connections instantly.</p>
-            </div>
-            <div class="feature">
-                <h3>🔄 Multi-Cluster Support</h3>
-                <p>Effortlessly switch between different Kubernetes clusters, making it easy to manage multiple environments from a single application.</p>
-            </div>
-            <div class="feature">
-                <h3>🌓 Dark Mode Support</h3>
-                <p>K-Porter adapts to your system preferences with full light and dark mode support, providing a comfortable experience day or night.</p>
-            </div>
-        </div>
-        
-        <section class="how-it-works">
-            <h2>How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Install K-Porter</h3>
-                    <p>Download and install K-Porter for your operating system from the GitHub releases page.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Select a Cluster</h3>
-                    <p>K-Porter automatically detects your Kubernetes clusters from your kubeconfig file.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Browse & Connect</h3>
-                    <p>Browse namespaces and services, then click "Port Forward" to create a connection.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section class="download-section" id="download">
-            <h2>Available for All Platforms</h2>
-            <p>K-Porter is available for macOS, Windows, and Linux. Installation is simple - just download from GitHub Releases and follow the platform-specific instructions.</p>
-            
-            <div class="platforms">
-                <span class="platform-badge">macOS</span>
-                <span class="platform-badge">Windows</span>
-                <span class="platform-badge">Linux</span>
-            </div>
-            
-            <div class="btn-container">
-                <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
-            </div>
-        </section>
-        
+        <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
+        <a href="https://github.com/light-handle/k-porter" class="btn btn-secondary">View on GitHub</a>
     </div>
+    
+    <h2>Key Features</h2>
+    <ul class="feature-list">
+        <li><strong>Automatic Detection</strong> - Automatically detects Kubernetes clusters from your kubeconfig file</li>
+        <li><strong>Resource Browser</strong> - Easily browse namespaces and services in each cluster</li>
+        <li><strong>One-Click Port Forwarding</strong> - Set up port forwarding with just a few clicks</li>
+        <li><strong>Connection Manager</strong> - Track and manage all active port forwards</li>
+        <li><strong>Multi-Cluster Support</strong> - Easily switch between different Kubernetes clusters</li>
+        <li><strong>Dark Mode Support</strong> - Comfortable viewing experience day or night</li>
+    </ul>
+    
+    <h2>Supported Platforms</h2>
+    <p>K-Porter is available for:</p>
+    <ul>
+        <li>macOS (10.14 and later)</li>
+        <li>Windows (10 and later)</li>
+        <li>Linux (Debian/Ubuntu and other distros)</li>
+    </ul>
     
     <footer>
         <p>K-Porter is open-source software released under the MIT License.</p>
         <p><a href="https://github.com/light-handle/k-porter">View on GitHub</a> | <a href="https://github.com/light-handle/k-porter/issues">Report an Issue</a></p>
     </footer>
-
-    <script>
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html> 
