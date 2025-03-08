@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const k8s = require('@kubernetes/client-node');
@@ -18,9 +18,38 @@ let mainWindow;
 // URL to check for latest version (replace with your actual repo)
 const GITHUB_REPO_API = 'https://api.github.com/repos/yourusername/k-porter/releases/latest';
 
+// Add a function to show a critical error dialog
+function showCriticalError(title, message) {
+  if (app.isReady()) {
+    dialog.showErrorBox(title, message);
+  } else {
+    // If app is not ready yet, show error when it is
+    app.on('ready', () => {
+      dialog.showErrorBox(title, message);
+    });
+  }
+  
+  console.error(`${title}: ${message}`);
+  
+  // Log to a file that will persist
+  const fs = require('fs');
+  const logPath = path.join(os.homedir(), '.k-porter-error.log');
+  fs.appendFileSync(logPath, `[${new Date().toISOString()}] ${title}: ${message}\n`);
+}
+
+// Add more detailed debug information
+const isDebug = process.argv.includes('--verbose');
+if (isDebug) {
+  console.log('Running in verbose mode');
+  console.log('App location:', app.getAppPath());
+  console.log('Process arguments:', process.argv);
+  console.log('Process environment:', process.env);
+}
+
 // Ensure HOME environment variable is set for .kube/config access
 if (!process.env.HOME) {
   process.env.HOME = os.homedir();
+  if (isDebug) console.log('Set HOME to:', process.env.HOME);
 }
 
 // Add common binary paths to PATH if not already present
@@ -47,15 +76,21 @@ function ensurePathsInEnv() {
   process.env.PATH = pathEnv;
   
   // Debug log for troubleshooting
-  console.log('Using PATH:', process.env.PATH);
-  console.log('HOME directory:', process.env.HOME);
+  if (isDebug) {
+    console.log('Using PATH:', process.env.PATH);
+    console.log('HOME directory:', process.env.HOME);
   
-  // Check if kubectl is available
-  try {
-    const kubectlVersion = execSync('which kubectl').toString().trim();
-    console.log('kubectl found at:', kubectlVersion);
-  } catch (error) {
-    console.error('kubectl not found in PATH, will try to use bundled version if available');
+    // Check if kubectl is available
+    try {
+      const kubectlVersion = execSync('which kubectl').toString().trim();
+      console.log('kubectl found at:', kubectlVersion);
+    } catch (error) {
+      console.error('kubectl not found in PATH');
+      showCriticalError(
+        'kubectl Not Found', 
+        'kubectl command was not found in your PATH. Please install kubectl and ensure it is accessible.'
+      );
+    }
   }
 }
 
@@ -217,14 +252,20 @@ function checkKubeConfig() {
   
   let kubeConfigPath = process.env.KUBECONFIG || defaultKubeConfigPath;
   
-  console.log('Looking for kubeconfig at:', kubeConfigPath);
+  if (isDebug) console.log('Looking for kubeconfig at:', kubeConfigPath);
   
   if (!fs.existsSync(kubeConfigPath)) {
-    console.error('kubeconfig file not found at:', kubeConfigPath);
+    if (isDebug) console.error('kubeconfig file not found at:', kubeConfigPath);
+    
+    showCriticalError(
+      'Kubernetes Configuration Not Found',
+      `Could not find a kubeconfig file at ${kubeConfigPath}. Please ensure your Kubernetes configuration is set up correctly.`
+    );
+    
     return false;
   }
   
-  console.log('kubeconfig file found at:', kubeConfigPath);
+  if (isDebug) console.log('kubeconfig file found at:', kubeConfigPath);
   return true;
 }
 

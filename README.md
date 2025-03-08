@@ -35,6 +35,18 @@ If you prefer not to use Terminal, you can try:
 3. Click "Open" in the dialog that appears
 4. The app should now open and remember this choice
 
+### Using the K-Porter Launcher (macOS)
+
+K-Porter comes with a launcher application that helps ensure all required environment variables and dependencies are properly set up. This is especially helpful if you encounter issues when launching K-Porter directly.
+
+To use the launcher:
+1. In the Applications folder, you'll find `K-Porter-Launcher.app` alongside `K-Porter.app`
+2. Double-click `K-Porter-Launcher.app` to start K-Porter with the proper environment
+3. The launcher will verify that kubectl is installed and that your kubeconfig exists
+4. If any prerequisites are missing, the launcher will show a helpful error message with instructions
+
+**If you encounter issues with K-Porter not opening when double-clicked, always try using the launcher instead.**
+
 ### Windows
 
 1. Download the latest `K-Porter-Setup-x.x.x.exe` (installer) or `K-Porter-x.x.x.exe` (portable) from the [Releases](https://github.com/light-handle/k-porter/releases) page or [downloads site](https://light-handle.github.io/k-porter/)
@@ -159,7 +171,14 @@ git push && git push --tags
    - Check the logs for errors
    - Verify that all dependencies are correctly installed
 
-4. **Windows-specific issues**
+4. **App doesn't open when double-clicked (macOS)**
+   - Use the K-Porter-Launcher.app instead, which will set up the proper environment
+   - The launcher will check for kubectl and kubeconfig and provide helpful error messages
+   - Run `sudo xattr -rd com.apple.quarantine /Applications/K-Porter.app /Applications/K-Porter-Launcher.app` to remove quarantine attributes
+   - Check the log files in your home directory: `~/.k-porter-error.log` and `~/.k-porter-launcher.log`
+   - Try running the app from Terminal with `open -a K-Porter --stdout` to see console output
+
+5. **Windows-specific issues**
    - If kubectl.exe isn't found, make sure it's in your PATH
    - Try running kubectl commands from Command Prompt to verify it works
 

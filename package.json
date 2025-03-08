@@ -32,6 +32,14 @@
       {
         "from": "node_modules/@kubernetes",
         "to": "node_modules/@kubernetes"
+      },
+      {
+        "from": "launch.sh",
+        "to": "launch.sh"
+      },
+      {
+        "from": "K-Porter-Launcher.app",
+        "to": "K-Porter-Launcher.app"
       }
     ],
     "files": [
