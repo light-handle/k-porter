@@ -9,6 +9,7 @@
     "build:mac": "electron-builder --mac",
     "build:win": "electron-builder --win",
     "build:linux": "electron-builder --linux",
+    "generate-icons": "scripts/generate-icons.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -28,15 +29,15 @@
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": ["dmg", "zip"],
-      "icon": "build/icon.icns",
       "darkModeSupport": true,
-      "hardenedRuntime": false,
-      "entitlements": false,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.plist",
+      "entitlementsInherit": "build/entitlements.plist",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "dmg": {
       "background": "build/background.png",
-      "icon": "build/icon.icns",
       "iconSize": 100,
       "contents": [
         {

@@ -1,3 +1,71 @@
+# Building K-Porter
+
+This directory contains assets needed for building distributable packages of K-Porter.
+
+## macOS Build Requirements
+
+For macOS builds, you'll need the following files:
+
+1. `icons/icon.icns` - An macOS icon file for the application
+   - Create this from a 1024x1024 PNG file using tools like iconutil or online converters
+   - Follow Apple's [guidelines for app icons](https://developer.apple.com/design/human-interface-guidelines/app-icons)
+
+2. `background.png` - The background image for the DMG installer
+   - Create a 540x380 PNG file
+   - Include visual instructions showing how to drag the app to the Applications folder
+   - Use transparency for better visual appearance
+
+## Creating macOS Icons
+
+To create a proper macOS icon from a PNG:
+
+1. Create PNG images in the following sizes:
+   - 16x16
+   - 32x32
+   - 64x64
+   - 128x128
+   - 256x256
+   - 512x512
+   - 1024x1024
+
+2. Create an iconset folder with these images named according to Apple's requirements:
+   ```
+   MyIcon.iconset/
+     icon_16x16.png
+     icon_16x16@2x.png
+     icon_32x32.png
+     icon_32x32@2x.png
+     icon_128x128.png
+     icon_128x128@2x.png
+     icon_256x256.png
+     icon_256x256@2x.png
+     icon_512x512.png
+     icon_512x512@2x.png
+   ```
+
+3. Use the iconutil command to create the .icns file:
+   ```
+   iconutil -c icns MyIcon.iconset
+   ```
+
+4. Copy the resulting .icns file to `build/icon.icns`
+
+## Building the App
+
+Once you have all the necessary assets in place:
+
+1. Build for macOS: `npm run build:mac`
+2. The built application will be in the `dist` directory
+
+## Troubleshooting macOS Builds
+
+If you encounter issues with macOS builds:
+
+1. Make sure the icon.icns file is properly formatted and in the correct location
+2. Verify that your macOS code signing certificates are set up correctly
+3. If testing notarization, make sure you have proper Apple Developer credentials
+4. For distribution outside the App Store, ensure hardened runtime and entitlements are configured correctly
+
 # DMG Installer Assets
 
 Place the following files in this directory to create a beautiful DMG installer like Sublime Text:
