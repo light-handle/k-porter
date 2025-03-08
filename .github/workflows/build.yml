@@ -36,14 +36,14 @@ jobs:
       - run: npm ci
       - run: npm run build:mac -- --publish never
       - name: List dist directory contents
-        run: ls -la dist/
+        run: find dist -type f | sort
       - name: Upload macOS DMG
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/K-Porter-${{ github.ref_name }}-arm64.dmg
+          asset_path: ./dist/K-Porter-1.0.0-arm64.dmg
           asset_name: K-Porter-${{ github.ref_name }}-mac.dmg
           asset_content_type: application/octet-stream
       - name: Upload macOS ZIP
@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/K-Porter-${{ github.ref_name }}-arm64.zip
+          asset_path: ./dist/K-Porter-1.0.0-arm64.zip
           asset_name: K-Porter-${{ github.ref_name }}-mac.zip
           asset_content_type: application/zip
 
@@ -68,14 +68,14 @@ jobs:
       - run: npm run build:win -- --publish never
       - name: List dist directory contents
         shell: pwsh
-        run: Get-ChildItem dist/
+        run: Get-ChildItem -Path dist -Recurse -File | Select-Object FullName | Sort-Object FullName
       - name: Upload Windows Installer
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/K-Porter-Setup-${{ github.ref_name }}.exe
+          asset_path: ./dist/K-Porter-Setup-1.0.0.exe
           asset_name: K-Porter-Setup-${{ github.ref_name }}.exe
           asset_content_type: application/octet-stream
       - name: Upload Windows Portable
@@ -84,7 +84,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/K-Porter-${{ github.ref_name }}.exe
+          asset_path: ./dist/K-Porter-1.0.0.exe
           asset_name: K-Porter-${{ github.ref_name }}-portable.exe
           asset_content_type: application/octet-stream
 
@@ -99,14 +99,14 @@ jobs:
       - run: npm ci
       - run: npm run build:linux -- --publish never
       - name: List dist directory contents
-        run: ls -la dist/
+        run: find dist -type f | sort
       - name: Upload Linux AppImage
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/K-Porter-${{ github.ref_name }}.AppImage
+          asset_path: ./dist/K-Porter-1.0.0.AppImage
           asset_name: K-Porter-${{ github.ref_name }}.AppImage
           asset_content_type: application/octet-stream
       - name: Upload Linux DEB
@@ -115,6 +115,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./dist/k-porter_${{ github.ref_name }}_amd64.deb
+          asset_path: ./dist/k-porter_1.0.0_amd64.deb
           asset_name: k-porter_${{ github.ref_name }}_amd64.deb
           asset_content_type: application/octet-stream 
