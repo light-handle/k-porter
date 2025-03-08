@@ -26,6 +26,7 @@
   "build": {
     "appId": "com.k-porter",
     "productName": "K-Porter",
+    "publish": null,
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": ["dmg", "zip"],

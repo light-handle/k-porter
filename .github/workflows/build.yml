@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run build:mac
+      - run: npm run build:mac -- --publish never
       - name: Upload macOS DMG
         uses: actions/upload-release-asset@v1
         env:
@@ -63,7 +63,7 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run build:win
+      - run: npm run build:win -- --publish never
       - name: Upload Windows Installer
         uses: actions/upload-release-asset@v1
         env:
@@ -92,7 +92,7 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run build:linux
+      - run: npm run build:linux -- --publish never
       - name: Upload Linux AppImage
         uses: actions/upload-release-asset@v1
         env:
