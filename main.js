@@ -7,6 +7,8 @@ const yaml = require('js-yaml');
 const Store = require('electron-store');
 const https = require('https');
 const { version } = require('./package.json');
+const os = require('os');
+const { execSync } = require('child_process');
 
 // Initialize config store
 const store = new Store();
@@ -15,6 +17,50 @@ let mainWindow;
 
 // URL to check for latest version (replace with your actual repo)
 const GITHUB_REPO_API = 'https://api.github.com/repos/yourusername/k-porter/releases/latest';
+
+// Ensure HOME environment variable is set for .kube/config access
+if (!process.env.HOME) {
+  process.env.HOME = os.homedir();
+}
+
+// Add common binary paths to PATH if not already present
+function ensurePathsInEnv() {
+  const commonPaths = [
+    '/usr/local/bin',
+    '/usr/bin',
+    '/bin',
+    '/usr/sbin',
+    '/sbin',
+    path.join(os.homedir(), '.krew/bin'),
+    path.join(os.homedir(), 'bin')
+  ];
+  
+  let pathEnv = process.env.PATH || '';
+  
+  // Add each path if it's not already in PATH
+  for (const binPath of commonPaths) {
+    if (!pathEnv.split(':').includes(binPath)) {
+      pathEnv = binPath + ':' + pathEnv;
+    }
+  }
+  
+  process.env.PATH = pathEnv;
+  
+  // Debug log for troubleshooting
+  console.log('Using PATH:', process.env.PATH);
+  console.log('HOME directory:', process.env.HOME);
+  
+  // Check if kubectl is available
+  try {
+    const kubectlVersion = execSync('which kubectl').toString().trim();
+    console.log('kubectl found at:', kubectlVersion);
+  } catch (error) {
+    console.error('kubectl not found in PATH, will try to use bundled version if available');
+  }
+}
+
+// Call this function early
+ensurePathsInEnv();
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -163,22 +209,62 @@ ipcMain.handle('get-clusters', async () => {
   }
 });
 
+// Add a helper to check if kubeconfig is available
+function checkKubeConfig() {
+  const fs = require('fs');
+  const homeDir = os.homedir();
+  const defaultKubeConfigPath = path.join(homeDir, '.kube', 'config');
+  
+  let kubeConfigPath = process.env.KUBECONFIG || defaultKubeConfigPath;
+  
+  console.log('Looking for kubeconfig at:', kubeConfigPath);
+  
+  if (!fs.existsSync(kubeConfigPath)) {
+    console.error('kubeconfig file not found at:', kubeConfigPath);
+    return false;
+  }
+  
+  console.log('kubeconfig file found at:', kubeConfigPath);
+  return true;
+}
+
 // IPC handler for getting namespaces
 ipcMain.handle('get-namespaces', async (event, context) => {
   try {
+    console.log('Getting namespaces for context:', context);
+    
+    // Check if kubeconfig exists before proceeding
+    if (!checkKubeConfig()) {
+      return { error: 'Kubernetes configuration file not found. Please ensure your kubeconfig is set up correctly.' };
+    }
+    
     const kc = new k8s.KubeConfig();
     kc.loadFromDefault();
     
+    // Log available contexts for debugging
+    console.log('Available contexts:', kc.getContexts().map(c => c.name));
+    
     if (context) {
+      console.log('Setting current context to:', context);
       kc.setCurrentContext(context);
     }
     
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+    console.log('Requesting namespaces...');
+    
     const res = await k8sApi.listNamespace();
-    return res.body.items.map(ns => ns.metadata.name);
+    
+    if (!res || !res.body || !res.body.items) {
+      console.error('Invalid response from Kubernetes API:', res);
+      return { error: 'Invalid response from Kubernetes API' };
+    }
+    
+    const namespaces = res.body.items.map(ns => ns.metadata.name);
+    console.log(`Found ${namespaces.length} namespaces`);
+    return namespaces;
   } catch (error) {
     console.error('Error getting namespaces:', error);
-    return { error: error.message };
+    return { error: error.message || 'Unknown error fetching namespaces' };
   }
 });
 

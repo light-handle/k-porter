@@ -110,16 +110,18 @@ async function loadNamespaces(context) {
     
     const namespaceResult = await ipcRenderer.invoke('get-namespaces', context);
     
-    if (Array.isArray(namespaceResult) && namespaceResult.error) {
+    // Improved error handling
+    if (namespaceResult && namespaceResult.error) {
       namespaceList.innerHTML = `<div class="error">Error: ${namespaceResult.error}</div>`;
       showNotification('Error Loading Namespaces', namespaceResult.error, 'error');
       return;
     }
     
-    namespaces = namespaceResult || [];
+    // Make sure namespaces is an array
+    namespaces = Array.isArray(namespaceResult) ? namespaceResult : [];
     
     if (namespaces.length === 0) {
-      namespaceList.innerHTML = '<div class="empty-message">No namespaces found</div>';
+      namespaceList.innerHTML = '<div class="error">No namespaces found. Check your cluster connection.</div>';
       return;
     }
     
