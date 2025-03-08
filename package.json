@@ -31,11 +31,12 @@
       "category": "public.app-category.developer-tools",
       "target": ["dmg", "zip"],
       "darkModeSupport": true,
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.plist",
       "entitlementsInherit": "build/entitlements.plist",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "identity": null
     },
     "dmg": {
       "background": "build/background.png",
