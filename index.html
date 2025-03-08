@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>K-Porter - Kubernetes Port Forwarder</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1><i class="fas fa-network-wired"></i> K-Porter</h1>
+        <p>Kubernetes Port Forwarder</p>
+      </div>
+      <div class="header-buttons">
+        <div class="theme-toggle">
+          <button id="themeToggle" class="theme-toggle-button" title="Toggle theme">
+            <i class="fas fa-sun sun-icon"></i>
+            <i class="fas fa-moon moon-icon"></i>
+          </button>
+        </div>
+        <div class="refresh-button">
+          <button id="refreshBtn" title="Refresh all data"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="main-content">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <h2><i class="fas fa-server"></i> Clusters</h2>
+          <div id="clusterList" class="list-container">
+            <div class="loading">Loading clusters...</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content">
+        <div class="namespaces-section">
+          <h2><i class="fas fa-folder"></i> Namespaces</h2>
+          <div id="namespaceList" class="list-container">
+            <div class="loading">Select a cluster first</div>
+          </div>
+        </div>
+        
+        <div class="services-section">
+          <h2><i class="fas fa-cubes"></i> Services</h2>
+          <div id="serviceList" class="list-container">
+            <div class="loading">Select a namespace first</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="active-forwards-section">
+      <h2><i class="fas fa-exchange-alt"></i> Active Port Forwards</h2>
+      <div id="activeForwardsList" class="list-container active-forwards">
+        <div class="empty-message">No active port forwards</div>
+      </div>
+    </div>
+    
+    <div id="notifications" class="notifications"></div>
+  </div>
+  
+  <!-- Port Forward Modal -->
+  <div id="portForwardModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2><i class="fas fa-plug"></i> Port Forward Service</h2>
+      <form id="portForwardForm">
+        <input type="hidden" id="modalContext">
+        <input type="hidden" id="modalNamespace">
+        <input type="hidden" id="modalService">
+        
+        <div class="form-group">
+          <label for="localPort"><i class="fas fa-laptop"></i> Local Port:</label>
+          <input type="number" id="localPort" required min="1" max="65535" placeholder="Enter local port">
+        </div>
+        
+        <div class="form-group">
+          <label for="remotePort"><i class="fas fa-cloud"></i> Remote Port:</label>
+          <select id="remotePort" required></select>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="button primary"><i class="fas fa-play"></i> Start Port Forward</button>
+          <button type="button" class="button secondary" id="cancelPortForward"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <footer>
+    <p>K-Porter • <a href="https://github.com/yourusername/k-porter" target="_blank">GitHub</a> • <span id="version">v1.0.0</span></p>
+  </footer>
+  
+  <script src="renderer.js"></script>
+</body>
+</html> 

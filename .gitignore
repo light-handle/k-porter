@@ -1,0 +1,49 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+out/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Optional: exclude build assets you'll host on GitHub Pages
+# Uncomment if you're storing icons/backgrounds elsewhere
+# build/*.icns
+# build/*.ico
+# build/*.png 
