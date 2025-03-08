@@ -199,17 +199,18 @@
             color: var(--text-secondary);
         }
         
-        .downloads {
+        .download-section {
             background-color: var(--bg-white);
             border-radius: 16px;
             padding: 3rem 2rem;
             margin-bottom: 4rem;
             box-shadow: var(--shadow-lg);
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
         
-        .downloads::before {
+        .download-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -219,75 +220,36 @@
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
         
-        .downloads h2 {
-            text-align: center;
-            margin-bottom: 3rem;
+        .download-section h2 {
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
             font-size: 2.5rem;
             font-weight: 700;
         }
         
-        .platform-downloads {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .platform {
-            text-align: center;
-            padding: 2rem;
-            background-color: var(--bg-light);
-            border-radius: 12px;
-            transition: transform 0.2s ease;
-        }
-        
-        .platform:hover {
-            transform: translateY(-5px);
-        }
-        
-        .platform img {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 1rem;
-        }
-        
-        .platform h3 {
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 1.5rem;
-        }
-        
-        .download-link {
-            display: block;
-            margin: 15px auto;
-            padding: 12px 16px;
-            width: 80%;
-            background-color: var(--bg-white);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .download-link:hover {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: var(--shadow);
-        }
-        
-        .version-info {
-            text-align: center;
+        .download-section p {
             color: var(--text-secondary);
             margin-bottom: 2rem;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .version-number {
-            color: var(--primary-color);
-            font-weight: 600;
+        .platforms {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .platform-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background-color: var(--bg-light);
+            color: var(--text-secondary);
+            font-weight: 500;
         }
         
         .how-it-works {
@@ -373,10 +335,6 @@
             .features {
                 grid-template-columns: 1fr;
             }
-            
-            .platform-downloads {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -389,10 +347,10 @@
         
         <section class="hero">
             <p>
-                Simplify your Kubernetes workflow with K-Porter - a sleek, intuitive desktop application that makes port-forwarding to Kubernetes services effortless. Browse clusters, namespaces, and services with ease, and set up port forwards with just a few clicks.
+                K-Porter is a desktop application that simplifies Kubernetes port forwarding. With an intuitive interface, it lets you browse your clusters, namespaces, and services, and set up port forwards with just a few clicks - no more complex kubectl commands.
             </p>
             <div class="btn-container">
-                <a href="#downloads" class="btn">Download Now</a>
+                <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
                 <a href="https://github.com/light-handle/k-porter" class="btn btn-secondary">View on GitHub</a>
             </div>
         </section>
@@ -430,7 +388,7 @@
                 <div class="step">
                     <div class="step-number">1</div>
                     <h3>Install K-Porter</h3>
-                    <p>Download and install K-Porter for your operating system - available for macOS, Windows, and Linux.</p>
+                    <p>Download and install K-Porter for your operating system from the GitHub releases page.</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
@@ -445,30 +403,21 @@
             </div>
         </section>
         
-        <section class="downloads" id="downloads">
-            <h2>Download K-Porter</h2>
-            <p class="version-info">Latest version: <span class="version-number">latest</span></p>
-            <div class="platform-downloads">
-                <div class="platform">
-                    <h3>macOS</h3>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/K-Porter-latest-mac.dmg" class="download-link">Download DMG</a>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/K-Porter-latest-mac.zip" class="download-link">Download ZIP</a>
-                    <p>For macOS 10.14 and later</p>
-                </div>
-                <div class="platform">
-                    <h3>Windows</h3>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/K-Porter-Setup-latest.exe" class="download-link">Download Installer</a>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/K-Porter-latest-portable.exe" class="download-link">Download Portable</a>
-                    <p>For Windows 10 and later</p>
-                </div>
-                <div class="platform">
-                    <h3>Linux</h3>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/K-Porter-latest.AppImage" class="download-link">Download AppImage</a>
-                    <a href="https://github.com/light-handle/k-porter/releases/latest/download/k-porter_latest_amd64.deb" class="download-link">Download DEB</a>
-                    <p>For Ubuntu, Debian, and other Linux distros</p>
-                </div>
+        <section class="download-section" id="download">
+            <h2>Available for All Platforms</h2>
+            <p>K-Porter is available for macOS, Windows, and Linux. Installation is simple - just download from GitHub Releases and follow the platform-specific instructions.</p>
+            
+            <div class="platforms">
+                <span class="platform-badge">macOS</span>
+                <span class="platform-badge">Windows</span>
+                <span class="platform-badge">Linux</span>
+            </div>
+            
+            <div class="btn-container">
+                <a href="https://github.com/light-handle/k-porter/releases/latest" class="btn">Download Latest Release</a>
             </div>
         </section>
+        
     </div>
     
     <footer>
@@ -485,60 +434,6 @@
                     behavior: 'smooth'
                 });
             });
-        });
-        
-        // Update download links with the latest version
-        document.addEventListener('DOMContentLoaded', function() {
-            // First set the links to point to the "latest" URL which will work regardless
-            document.querySelectorAll('.download-link').forEach(link => {
-                const originalHref = link.href;
-                const parts = originalHref.split('/');
-                const filename = parts[parts.length - 1];
-                
-                // Keep the URL with 'latest' in case the version fetch fails
-                link.setAttribute('data-original-url', originalHref);
-                
-                // Point to the direct latest download URL that works without JavaScript
-                link.href = `https://github.com/light-handle/k-porter/releases/latest/download/${filename}`;
-            });
-            
-            // Then try to fetch the actual version number
-            fetch('https://api.github.com/repos/light-handle/k-porter/releases/latest')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch latest release');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.tag_name) {
-                        const version = data.tag_name.replace(/^v/, ''); // Remove 'v' prefix if it exists
-                        console.log('Latest version:', version);
-                        
-                        // Update specific links with the exact version
-                        document.querySelectorAll('.download-link').forEach(link => {
-                            // Replace 'latest' in the URL with the actual version
-                            const href = link.getAttribute('data-original-url');
-                            if (href) {
-                                link.href = href.replace('latest', version);
-                            }
-                            
-                            // Also update any text that indicates the version
-                            if (link.textContent.includes('latest')) {
-                                link.textContent = link.textContent.replace('latest', `v${version}`);
-                            }
-                        });
-                        
-                        // Add version number to any element with class 'version-number'
-                        document.querySelectorAll('.version-number').forEach(el => {
-                            el.textContent = version;
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching latest version:', error);
-                    // The links will still point to /latest/download/ which will work
-                });
         });
     </script>
 </body>
