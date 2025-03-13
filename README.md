@@ -29,11 +29,11 @@ sudo xattr -rd com.apple.quarantine /Applications/K-Porter.app
 ```
 This removes the macOS security block. You'll only need to do this once.
 
-If you prefer not to use Terminal, you can try:
-1. Right-click (or Control+click) on the K-Porter app in Finder
-2. Select "Open" from the context menu
-3. Click "Open" in the dialog that appears
-4. The app should now open and remember this choice
+Then run the following command in the Terminal:
+```
+open /Applications/K-Porter.app
+```
+
 
 ### Using the K-Porter Launcher (macOS)
 
